@@ -39,7 +39,6 @@
   </header>
 
   <main class="grid">
-    <!-- Vstupy -->
     <section class="card" style="grid-column: span 6;">
       <h2>Vstupy</h2>
       <label for="F1">Syrová porce [g]</label>
@@ -57,7 +56,6 @@
       <div id="status" class="status"></div>
     </section>
 
-    <!-- Suroviny -->
     <section class="card" style="grid-column: span 6;">
       <h2>Suroviny</h2>
       <div class="row">
@@ -74,7 +72,6 @@
       </div>
     </section>
 
-    <!-- Porce a podíly -->
     <section class="card" style="grid-column: span 12;">
       <h2>Porce a podíly</h2>
       <table>
@@ -140,8 +137,8 @@
       const F5=denom?F3v*F7/denom:0, G5=denom?F3v*G7/denom:0, H5=denom?F3v*H7/denom:0, I5=denom?F3v*I7/denom:0;
       writeNumber('F5',F5); writeNumber('G5',G5); writeNumber('H5',H5); writeNumber('I5',I5);
 
-      const sumShares=F7+G7+H7+I7; const sumPortions=F5+G5+H5+I5; const diff=sumPortions-F3v;
-      summary.innerHTML=`Součet podílů: ${sumShares.toFixed(2)} % • Součet porcí: ${sumPortions.toFixed(2)} g • Reálná porce: ${F3v.toFixed(2)} g • Rozdíl: ${diff.toFixed(2)} g`;
+      const sumPortions=F5+G5+H5+I5;
+      summary.innerHTML=`Součet surovin: ${Fsum.toFixed(2)} g • Součet porcí: ${sumPortions.toFixed(2)} g`;
     }
 
     function saveAll(){ const data={}; for(const id of KEYS_MANUAL) data[id]=document.getElementById(id).value; localStorage.setItem('kalk-porci',JSON.stringify(data)); }

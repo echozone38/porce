@@ -1,6 +1,6 @@
 
 // Service Worker pro "Kalkulačka porcí"
-const CACHE_NAME = 'kalk-porci-cache-v1';
+const CACHE_NAME = 'kalk-porci-cache-v2';
 const CORE_ASSETS = [ './index.html', './manifest.json', './icons/icon-192.png', './icons/icon-512.png' ];
 self.addEventListener('install', (event) => {
   event.waitUntil(caches.open(CACHE_NAME).then(c=>c.addAll(CORE_ASSETS)));
