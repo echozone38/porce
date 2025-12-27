@@ -21,7 +21,6 @@
     .card h2 { margin:0 0 12px; font-size:1.1rem; }
     label { display:block; font-size:.9rem; color:var(--muted); margin-bottom:6px; }
     input[type=number] { width:100%; padding:10px 12px; border-radius:8px; border:1px solid #243055; background:#0e142a; color:var(--text); }
-    input[readonly] { opacity:.85; }
     .row { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
     .btnbar { display:flex; gap:8px; margin-top:12px; }
     button { padding:10px 14px; border:1px solid #23534f; border-radius:8px; background:var(--accent); color:#fff; cursor:pointer; }
@@ -52,15 +51,15 @@
       <label for="F2" style="margin-top:12px;">Hotová směs [g] (F2)</label>
       <input id="F2" type="number" min="0" step="0.01" placeholder="např. 1200" />
 
-      <label for="F3" style="margin-top:12px;">Reálná porce [g] (F3, výpočet)</label>
-      <input id="F3" type="number" readonly />
+      <label for="F3" style="margin-top:12px;">Reálná porce [g]</label>
+      <input id="F3" type="number" />
 
       <div class="btnbar">
-        <button id="calcF3Btn" type="button">Spočítat F3</button>
+        <button id="calcBtn" type="button">Spočítat</button>
         <button id="resetBtn" class="secondary" type="button">Vymazat vše</button>
         <button id="exportBtn" type="button">Export CSV</button>
       </div>
-      <div class="note">F3 = F1 × F2 / (F9 + ... + F18). Pokud je součet surovin 0, výpočet se neprovede.</div>
+      <div class="note">F3 = F1 × F2 / Σ(F9..F18). Výpočet probíhá, pouze pokud Σ(F9..F18) > 0.</div>
       <div id="status" class="status"></div>
     </section>
 
@@ -68,7 +67,7 @@
     <section class="card" style="grid-column: span 6;">
       <h2>Suroviny (F9–F18)</h2>
       <div class="row">
-        <div><label for="F9">1. (F9) [g]</label><input id="F9" type="number" min="0" step="0.01" value="0" /></div>
+        <div><label for="F9">1. (F9) [g]</label><input id="F9" type="number" min="0" step="0.01" value="100" /></div>
         <div><label for="F10">2. (F10) [g]</label><input id="F10" type="number" min="0" step="0.01" value="0" /></div>
         <div><label for="F11">3. (F11) [g]</label><input id="F11" type="number" min="0" step="0.01" value="0" /></div>
         <div><label for="F12">4. (F12) [g]</label><input id="F12" type="number" min="0" step="0.01" value="0" /></div>
@@ -135,7 +134,7 @@
       const denom=G7; const status=document.getElementById('status'); const summary=document.getElementById('summary');
 
       if(Fsum===0) {
-        status.innerHTML='<span class="warn">Součet surovin je 0 – zadejte F9..F18.</span>';
+        status.innerHTML='<span class="warn">Σ(F9..F18) = 0 – zadejte suroviny.</span>';
       } else if(denom===0) {
         status.innerHTML='<span class="warn">Referenční podíl G7 je 0 – nastavte nenulovou hodnotu.</span>';
       } else {
@@ -187,7 +186,7 @@
         document.getElementById('F9').value='100';
         saveAll(); recompute();
       });
-      document.getElementById('calcF3Btn').addEventListener('click', ()=>{ recompute(); });
+      document.getElementById('calcBtn').addEventListener('click', ()=>{ recompute(); });
       recompute();
     });
 
