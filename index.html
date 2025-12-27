@@ -9,50 +9,31 @@
   <link rel="manifest" href="./manifest.json">
   <link rel="icon" href="./icons/icon-192.png" sizes="192x192">
   <style>
-    :root {
-      --bg: #0b1020; /* zachováno z původní verze */
-      --accent: #0f766e; /* zachováno z původní verze */
-      --panel: #131933;
-      --text: #e6eef8;
-      --muted: #b7c2d0;
-      --danger: #e74c3c;
-      --ok: #22c55e;
-    }
+    :root { --bg:#0b1020; --accent:#0f766e; --panel:#131933; --text:#e6eef8; --muted:#b7c2d0; --danger:#e74c3c; --ok:#22c55e; }
     * { box-sizing: border-box; }
     html, body { height: 100%; }
-    body {
-      margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, sans-serif;
-      background: var(--bg); color: var(--text);
-      display: grid; place-items: start center; padding: 24px;
-    }
-    header { max-width: 1024px; width: 100%; }
-    h1 { margin: 0 0 8px; font-size: 1.6rem; }
-    .subtitle { color: var(--muted); margin-bottom: 16px; }
-    .grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 12px; max-width: 1024px; width: 100%; }
-    .card { background: var(--panel); border: 1px solid #1c2447; border-radius: 12px; padding: 16px; }
-    .card h2 { margin: 0 0 12px; font-size: 1.1rem; }
-    label { display: block; font-size: .9rem; color: var(--muted); margin-bottom: 6px; }
-    input[type="number"] {
-      width: 100%; padding: 10px 12px; border-radius: 8px; border: 1px solid #243055;
-      background: #0e142a; color: var(--text);
-    }
-    input[readonly], input[disabled] { opacity: .85; }
-    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-    .btnbar { display: flex; gap: 8px; margin-top: 12px; }
-    button {
-      padding: 10px 14px; border: 1px solid #23534f; border-radius: 8px; background: var(--accent); color: #fff; cursor: pointer;
-    }
-    button.secondary { background: transparent; color: var(--text); border-color: #33446e; }
-    button.danger { background: var(--danger); border-color: #992d22; }
-    table { width: 100%; border-collapse: collapse; }
-    th, td { border-bottom: 1px solid #223057; padding: 8px; text-align: left; }
-    th { color: var(--muted); font-weight: 600; }
-    .note { font-size: .85rem; color: var(--muted); margin-top: 8px; }
-    .status { margin-top: 8px; font-size: .95rem; }
-    .status .warn { color: var(--danger); }
-    .status .ok { color: var(--ok); }
-    footer { margin-top: 16px; color: var(--muted); font-size: .85rem; }
-    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
+    body { margin:0; font-family: system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif; background:var(--bg); color:var(--text); display:grid; place-items:start center; padding:24px; }
+    header { max-width:1024px; width:100%; }
+    h1 { margin:0 0 8px; font-size:1.6rem; }
+    .subtitle { color:var(--muted); margin-bottom:16px; }
+    .grid { display:grid; grid-template-columns: repeat(12,1fr); gap:12px; max-width:1024px; width:100%; }
+    .card { background:var(--panel); border:1px solid #1c2447; border-radius:12px; padding:16px; }
+    .card h2 { margin:0 0 12px; font-size:1.1rem; }
+    label { display:block; font-size:.9rem; color:var(--muted); margin-bottom:6px; }
+    input[type=number] { width:100%; padding:10px 12px; border-radius:8px; border:1px solid #243055; background:#0e142a; color:var(--text); }
+    input[readonly] { opacity:.85; }
+    .row { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+    .btnbar { display:flex; gap:8px; margin-top:12px; }
+    button { padding:10px 14px; border:1px solid #23534f; border-radius:8px; background:var(--accent); color:#fff; cursor:pointer; }
+    button.secondary { background:transparent; color:var(--text); border-color:#33446e; }
+    table { width:100%; border-collapse:collapse; }
+    th, td { border-bottom:1px solid #223057; padding:8px; text-align:left; }
+    th { color:var(--muted); font-weight:600; }
+    .note { font-size:.85rem; color:var(--muted); margin-top:8px; }
+    .status { margin-top:8px; font-size:.95rem; }
+    .status .warn { color:var(--danger); }
+    .status .ok { color:var(--ok); }
+    footer { margin-top:16px; color:var(--muted); font-size:.85rem; }
   </style>
 </head>
 <body>
@@ -70,52 +51,37 @@
       <label for="F2" style="margin-top:12px;">Hotová směs [g] (F2)</label>
       <input id="F2" type="number" min="0" step="0.01" placeholder="např. 1200" />
 
-      <div class="row" style="margin-top:12px;">
-        <div>
-          <label for="F3">Reálná porce [g] (F3, výpočet)</label>
-          <input id="F3" type="number" readonly />
-        </div>
-        <div>
-          <label for="sumIng">Součet surovin [g] (Σ F9..F18)</label>
-          <input id="sumIng" type="number" readonly />
-        </div>
-      </div>
+      <label for="F3" style="margin-top:12px;">Reálná porce [g] (F3, výpočet)</label>
+      <input id="F3" type="number" readonly />
 
       <div class="btnbar">
         <button id="resetBtn" class="secondary" type="button">Vymazat vše</button>
         <button id="exportBtn" type="button">Export CSV</button>
       </div>
-      <div class="note">Pozn.: F3 = F1 × F2 / (F9 + F10 + … + F18). Pokud je součet surovin 0, výpočet se neprovede.</div>
+      <div class="note">F3 = F1 × F2 / (F9 + ... + F18). Pokud je součet surovin 0, výpočet se neprovede.</div>
       <div id="status" class="status"></div>
     </section>
 
     <section class="card" style="grid-column: span 6;">
-      <h2>Suroviny (F9 – F18)</h2>
+      <h2>Suroviny (F9–F18)</h2>
       <div class="row">
-        <div><label for="F9">1. (F9) [g]</label><input id="F9" type="number" min="0" step="0.01" /></div>
-        <div><label for="F10">2. (F10) [g]</label><input id="F10" type="number" min="0" step="0.01" /></div>
-        <div><label for="F11">3. (F11) [g]</label><input id="F11" type="number" min="0" step="0.01" /></div>
-        <div><label for="F12">4. (F12) [g]</label><input id="F12" type="number" min="0" step="0.01" /></div>
-        <div><label for="F13">5. (F13) [g]</label><input id="F13" type="number" min="0" step="0.01" /></div>
-        <div><label for="F14">6. (F14) [g]</label><input id="F14" type="number" min="0" step="0.01" /></div>
-        <div><label for="F15">7. (F15) [g]</label><input id="F15" type="number" min="0" step="0.01" /></div>
-        <div><label for="F16">8. (F16) [g]</label><input id="F16" type="number" min="0" step="0.01" /></div>
-        <div><label for="F17">9. (F17) [g]</label><input id="F17" type="number" min="0" step="0.01" /></div>
-        <div><label for="F18">10. (F18) [g]</label><input id="F18" type="number" min="0" step="0.01" /></div>
+        <div><label for="F9">1. (F9) [g]</label><input id="F9" type="number" min="0" step="0.01" value="0" /></div>
+        <div><label for="F10">2. (F10) [g]</label><input id="F10" type="number" min="0" step="0.01" value="0" /></div>
+        <div><label for="F11">3. (F11) [g]</label><input id="F11" type="number" min="0" step="0.01" value="0" /></div>
+        <div><label for="F12">4. (F12) [g]</label><input id="F12" type="number" min="0" step="0.01" value="0" /></div>
+        <div><label for="F13">5. (F13) [g]</label><input id="F13" type="number" min="0" step="0.01" value="0" /></div>
+        <div><label for="F14">6. (F14) [g]</label><input id="F14" type="number" min="0" step="0.01" value="0" /></div>
+        <div><label for="F15">7. (F15) [g]</label><input id="F15" type="number" min="0" step="0.01" value="0" /></div>
+        <div><label for="F16">8. (F16) [g]</label><input id="F16" type="number" min="0" step="0.01" value="0" /></div>
+        <div><label for="F17">9. (F17) [g]</label><input id="F17" type="number" min="0" step="0.01" value="0" /></div>
+        <div><label for="F18">10. (F18) [g]</label><input id="F18" type="number" min="0" step="0.01" value="0" /></div>
       </div>
     </section>
 
     <section class="card" style="grid-column: span 12;">
       <h2>Porce / Poměr / Podíl</h2>
       <table>
-        <thead>
-          <tr>
-            <th>Osoba</th>
-            <th>Porce [g]</th>
-            <th>Poměr</th>
-            <th>Podíl [%]</th>
-          </tr>
-        </thead>
+        <thead><tr><th>Osoba</th><th>Porce [g]</th><th>Poměr</th><th>Podíl [%]</th></tr></thead>
         <tbody>
           <tr>
             <td>Kája</td>
@@ -143,7 +109,7 @@
           </tr>
         </tbody>
       </table>
-      <div class="note">Definice: F6 = F7/100, G6 = G7/100, H6 = H7/100, I6 = I7/100. Porce: F5 = F3 × F7 / G7; G5 = F3 × G7 / G7 = F3; H5 = F3 × H7 / G7; I5 = F3 × I7 / G7.</div>
+      <div class="note">F6 = F7/100, G6 = G7/100, H6 = H7/100, I6 = I7/100. Porce: F5 = F3 × F7 / G7; G5 = F3; H5 = F3 × H7 / G7; I5 = F3 × I7 / G7.</div>
       <div id="summary" class="status"></div>
     </section>
   </main>
@@ -153,127 +119,53 @@
   </footer>
 
   <script>
-    // Uložení/načtení
     const KEYS_MANUAL = ['F1','F2','F9','F10','F11','F12','F13','F14','F15','F16','F17','F18','F7','G7','H7','I7'];
 
-    function readNumber(id) {
-      const el = document.getElementById(id);
-      const v = parseFloat(el.value);
-      return isFinite(v) ? v : 0;
+    function readNumber(id){ const el=document.getElementById(id); const v=parseFloat(el.value); return isFinite(v)?v:0; }
+    function writeNumber(id,v){ const el=document.getElementById(id); el.value=(isFinite(v)?v:0).toFixed(2); }
+    function sumIngredients(){ return ['F9','F10','F11','F12','F13','F14','F15','F16','F17','F18'].reduce((s,id)=>s+readNumber(id),0); }
+
+    function recompute(){
+      const F1=readNumber('F1');
+      const F2=readNumber('F2');
+      const Fsum=sumIngredients();
+      let F3=0; if(Fsum>0) F3=F1*F2/Fsum; writeNumber('F3',F3);
+
+      const F7=readNumber('F7'), G7=readNumber('G7'), H7=readNumber('H7'), I7=readNumber('I7');
+      writeNumber('F6',F7/100); writeNumber('G6',G7/100); writeNumber('H6',H7/100); writeNumber('I6',I7/100);
+
+      const denom=G7; const status=document.getElementById('status'); const summary=document.getElementById('summary');
+      if(Fsum===0) status.innerHTML='<span class="warn">Součet surovin je 0 – zadejte F9..F18.</span>'; else if(denom===0) status.innerHTML='<span class="warn">Referenční podíl G7 je 0 – nastavte nenulovou hodnotu.</span>'; else status.innerHTML='<span class="ok">Výpočet v pořádku.</span>';
+
+      const F5=denom?F3*F7/denom:0, G5=denom?F3*G7/denom:0, H5=denom?F3*H7/denom:0, I5=denom?F3*I7/denom:0;
+      writeNumber('F5',F5); writeNumber('G5',G5); writeNumber('H5',H5); writeNumber('I5',I5);
+
+      const sumShares=F7+G7+H7+I7; const sumPortions=F5+G5+H5+I5; const diff=sumPortions-F3;
+      summary.innerHTML=`Součet podílů: ${sumShares.toFixed(2)} % • Součet porcí: ${sumPortions.toFixed(2)} g • Reálná porce (F3): ${F3.toFixed(2)} g • Rozdíl (Σ porce − F3): ${diff.toFixed(2)} g`;
     }
 
-    function writeNumber(id, v) {
-      const el = document.getElementById(id);
-      el.value = (isFinite(v) ? v : 0).toFixed(2);
-    }
+    function saveAll(){ const data={}; for(const id of KEYS_MANUAL) data[id]=document.getElementById(id).value; localStorage.setItem('real-vs-syrova',JSON.stringify(data)); }
+    function loadAll(){ try{ const data=JSON.parse(localStorage.getItem('real-vs-syrova'))||{}; for(const id of KEYS_MANUAL) if(id in data) document.getElementById(id).value=data[id]; }catch(e){} }
 
-    function sumIngredients() {
-      let s = 0;
-      for (const id of ['F9','F10','F11','F12','F13','F14','F15','F16','F17','F18']) s += readNumber(id);
-      return s;
-    }
-
-    function recompute() {
-      const F1 = readNumber('F1');
-      const F2 = readNumber('F2');
-      const Fsum = sumIngredients();
-
-      // F3 = F1 * F2 / sum(F9..F18)
-      let F3 = 0;
-      if (Fsum > 0) F3 = F1 * F2 / Fsum;
-      writeNumber('F3', F3);
-      writeNumber('sumIng', Fsum);
-
-      // Poměry (decimální)
-      const F7 = readNumber('F7');
-      const G7 = readNumber('G7');
-      const H7 = readNumber('H7');
-      const I7 = readNumber('I7');
-      writeNumber('F6', F7/100);
-      writeNumber('G6', G7/100);
-      writeNumber('H6', H7/100);
-      writeNumber('I6', I7/100);
-
-      // Porce s referencí G7
-      const denom = G7; // referenční podíl
-      const status = document.getElementById('status');
-      const summary = document.getElementById('summary');
-
-      if (Fsum === 0) {
-        status.innerHTML = '<span class="warn">Součet surovin je 0 – zadejte F9..F18.</span>';
-      } else if (denom === 0) {
-        status.innerHTML = '<span class="warn">Referenční podíl G7 je 0 – nastavte nenulovou hodnotu.</span>';
-      } else {
-        status.innerHTML = '<span class="ok">Výpočet v pořádku.</span>';
-      }
-
-      const F5 = denom ? F3 * F7 / denom : 0;
-      const G5 = denom ? F3 * G7 / denom : 0; // = F3
-      const H5 = denom ? F3 * H7 / denom : 0;
-      const I5 = denom ? F3 * I7 / denom : 0;
-      writeNumber('F5', F5);
-      writeNumber('G5', G5);
-      writeNumber('H5', H5);
-      writeNumber('I5', I5);
-
-      const sumShares = F7 + G7 + H7 + I7;
-      const sumPortions = F5 + G5 + H5 + I5;
-      const diff = sumPortions - F3; // kontrolní info proti reálné porci (na referenci)
-
-      summary.innerHTML = `Součet podílů: ${sumShares.toFixed(2)} % • Součet porcí: ${sumPortions.toFixed(2)} g • Reálná porce (F3): ${F3.toFixed(2)} g • Rozdíl (Σ porce − F3): ${diff.toFixed(2)} g`;
-    }
-
-    function saveAll() {
-      const data = {};
-      for (const id of KEYS_MANUAL) data[id] = document.getElementById(id).value;
-      localStorage.setItem('real-vs-syrova', JSON.stringify(data));
-    }
-    function loadAll() {
-      try {
-        const data = JSON.parse(localStorage.getItem('real-vs-syrova')) || {};
-        for (const id of KEYS_MANUAL) if (id in data) document.getElementById(id).value = data[id];
-      } catch(e) {}
-    }
-
-    function exportCSV() {
-      const rows = [
-        ['F1','F2','F3','Σ(F9..F18)','F9','F10','F11','F12','F13','F14','F15','F16','F17','F18','F5','G5','H5','I5','F6','G6','H6','I6','F7','G7','H7','I7']
-      ];
-      const vals = [];
-      for (const id of ['F1','F2','F3','sumIng','F9','F10','F11','F12','F13','F14','F15','F16','F17','F18','F5','G5','H5','I5','F6','G6','H6','I6','F7','G7','H7','I7']) {
-        const el = document.getElementById(id);
-        vals.push(el ? el.value : '');
-      }
-      rows.push(vals);
-      const csv = rows.map(r=>r.join(',')).join('
+    function exportCSV(){
+      const header=['F1','F2','F3','F9','F10','F11','F12','F13','F14','F15','F16','F17','F18','F5','G5','H5','I5','F6','G6','H6','I6','F7','G7','H7','I7'];
+      const ids=['F1','F2','F3','F9','F10','F11','F12','F13','F14','F15','F16','F17','F18','F5','G5','H5','I5','F6','G6','H6','I6','F7','G7','H7','I7'];
+      const row=ids.map(id=>{ const el=document.getElementById(id); return el?el.value:'';});
+      const csv=[header.join(','), row.join(',')].join('
 ');
-      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url; a.download = 'real-vs-syrova.csv'; a.click();
-      setTimeout(()=>URL.revokeObjectURL(url), 500);
+      const blob=new Blob([csv],{type:'text/csv;charset=utf-8;'});
+      const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='real-vs-syrova.csv'; a.click(); setTimeout(()=>URL.revokeObjectURL(url),500);
     }
 
-    document.addEventListener('DOMContentLoaded', () => {
+    document.addEventListener('DOMContentLoaded',()=>{
       loadAll();
-      for (const id of KEYS_MANUAL) {
-        document.getElementById(id).addEventListener('input', () => { saveAll(); recompute(); });
-      }
+      for(const id of KEYS_MANUAL){ document.getElementById(id).addEventListener('input',()=>{ saveAll(); recompute(); }); }
       document.getElementById('exportBtn').addEventListener('click', exportCSV);
-      document.getElementById('resetBtn').addEventListener('click', () => {
-        for (const id of KEYS_MANUAL) document.getElementById(id).value = '';
-        saveAll();
-        recompute();
-      });
+      document.getElementById('resetBtn').addEventListener('click',()=>{ for(const id of KEYS_MANUAL) document.getElementById(id).value=''; saveAll(); recompute(); });
       recompute();
     });
 
-    // Registrace Service Workeru
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('./sw.js');
-      });
-    }
+    if('serviceWorker' in navigator){ window.addEventListener('load',()=>{ navigator.serviceWorker.register('./sw.js'); }); }
   </script>
 </body>
 </html>
