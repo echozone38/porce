@@ -146,7 +146,17 @@
     }
 
     function saveAll(){ const data={}; for(const id of KEYS_MANUAL) data[id]=document.getElementById(id).value; localStorage.setItem('real-vs-syrova',JSON.stringify(data)); }
-    function loadAll(){ try{ const data=JSON.parse(localStorage.getItem('real-vs-syrova'))||{}; for(const id of KEYS_MANUAL) if(id in data) document.getElementById(id).value=data[id]; }catch(e){} }
+    function loadAll(){
+      try{
+        const data=JSON.parse(localStorage.getItem('real-vs-syrova'))||{};
+        for(const id of KEYS_MANUAL){ if(id in data) document.getElementById(id).value=data[id]; }
+        // Defaults on first load (if empty): F7=100, G7=80
+        const F7el=document.getElementById('F7');
+        const G7el=document.getElementById('G7');
+        if(!F7el.value){ F7el.value='100'; }
+        if(!G7el.value){ G7el.value='80'; }
+      }catch(e){}
+    }
 
     function exportCSV(){
       const header=['F1','F2','F3','F9','F10','F11','F12','F13','F14','F15','F16','F17','F18','F5','G5','H5','I5','F7','G7','H7','I7'];
@@ -160,9 +170,16 @@
 
     document.addEventListener('DOMContentLoaded',()=>{
       loadAll();
+      // Attach recompute+save to all manual inputs including F1/F2 and shares
       for(const id of KEYS_MANUAL){ document.getElementById(id).addEventListener('input',()=>{ saveAll(); recompute(); }); }
       document.getElementById('exportBtn').addEventListener('click', exportCSV);
-      document.getElementById('resetBtn').addEventListener('click',()=>{ for(const id of KEYS_MANUAL) document.getElementById(id).value=''; saveAll(); recompute(); });
+      document.getElementById('resetBtn').addEventListener('click',()=>{
+        for(const id of KEYS_MANUAL) document.getElementById(id).value='';
+        // Re-apply defaults for shares after reset
+        document.getElementById('F7').value='100';
+        document.getElementById('G7').value='80';
+        saveAll(); recompute();
+      });
       recompute();
     });
 
