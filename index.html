@@ -1,186 +1,159 @@
 
-<!doctype html>
-<html lang="cs">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Kalkulačka porcí</title>
-  <link rel="manifest" href="./manifest.json">
-  <style>
-    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial; margin: 1rem; background:#0b1020; color:#e5e7eb; }
-    h1, h2 { color:#a7f3d0; }
-    fieldset { border:1px solid #334155; padding:1rem; border-radius:8px; margin-bottom:1rem; }
-    label { display:block; margin:.5rem 0 .25rem; }
-    input[type=number] { width: 12rem; padding:.4rem; border-radius:6px; border:1px solid #334155; background:#111827; color:#e5e7eb; }
-    table { width:100%; border-collapse: collapse; margin-top:.5rem; }
-    th, td { border:1px solid #334155; padding:.5rem; }
-    th { background:#111827; }
-    tfoot td { font-weight:600; }
-    .note { color:#9ca3af; font-size:.9rem; }
-    .btn { padding:.5rem .8rem; border-radius:6px; background:#374151; color:white; border:none; cursor:pointer; }
-    .row { display:flex; gap:1rem; flex-wrap:wrap; }
-  </style>
-</head>
-<body>
-  <h1>Kalkulačka porcí</h1>
-  <p class="note">PWA kalkulačka pro výpočet reálné porce ze syrové porce a hotové směsi. Osoby: Kája, Máša, Fanda, Tóňa.</p>
+# Kalkulačka porcí
+## Kalkulačka porcí
 
-  <fieldset>
-    <legend>Vstupy</legend>
-    <label for="hotova">Hotová směs [g] (F2)</label>
-    <input id="hotova" type="number" step="0.01" value="1000" oninput="recalc()">
+PWA kalkulačka pro výpočet reálné porce ze syrové porce a hotové směsi. Osoby: Kája, Máša, Fanda, Tóňa.
+### Vstupy
 
-    <label for="masaPorce">Porce Máši [g] (F3) – může být jiná než referenční</label>
-    <input id="masaPorce" type="number" step="0.01" value="229" oninput="recalc()">
+Syrová porce [g] Hotová směs [g] Reálná porce [g] 
+Vymazat vše 
+### Suroviny
 
-    <div class="row">
-      <div>
-        <label for="podilKaja">Podíl Kája [%] (F7)</label>
-        <input id="podilKaja" type="number" step="0.01" value="39.3" oninput="recalc()">
-      </div>
-      <div>
-        <label for="podilMasa">Podíl Máša [%] (G7)</label>
-        <input id="podilMasa" type="number" step="0.01" value="22.9" oninput="recalc()">
-      </div>
-      <div>
-        <label for="podilFanda">Podíl Fanda [%] (H7)</label>
-        <input id="podilFanda" type="number" step="0.01" value="21.3" oninput="recalc()">
-      </div>
-      <div>
-        <label for="podilTona">Podíl Tóňa [%] (I7)</label>
-        <input id="podilTona" type="number" step="0.01" value="16.5" oninput="recalc()">
-      </div>
-    </div>
+1. 
+2. 
+3. 
+4. 
+5. 
+6. 
+7. 
+8. 
+9. 
+10. 
+### Porce a podíly
+<table>
+<tr>
+<th> 
+Osoba
+</th>
 
-    <p class="note">Pozn.: Výpočet porcí využívá vzorce: 
-      Kája = (F2−F3)*(F7/(F7+H7+I7)), Fanda = (F2−F3)*(H7/(F7+H7+I7)), Tóňa = (F2−F3)*(I7/(F7+H7+I7)).
-      Porce Máši je přímo hodnota F3.
-    </p>
-    <button class="btn" id="vymazat">Vymazat vše</button>
-  </fieldset>
+ <th>Porce [g]
+</th>
+ <th>Podíl [%]
+</th>
+ </tr>
+<tr>
+<td> 
+Kája
+</td>
+ <td> 
+</td>
+<td> 
+</td>
+</tr>
+<tr>
+<td> 
+Máša
+</td>
+ <td> 
+</td>
+<td> 
+</td>
+</tr>
+<tr>
+<td> 
+Fanda
+</td>
+ <td> 
+</td>
+<td> 
+</td>
+</tr>
+<tr>
+<td> 
+Tóňa
+</td>
+ <td> 
+</td>
+<td> 
+</td>
+</tr>
+</table>
 
-  <fieldset>
-    <legend>Porce a podíly</legend>
-    <table>
-      <thead>
-        <tr>
-          <th>Osoba</th>
-          <th>Porce [g]</th>
-          <th>Podíl [%] (referenční)</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Kája</td>
-          <td id="porceKaja">–</td>
-          <td><span id="podilKajaOut">–</span></td>
-        </tr>
-        <tr>
-          <td>Máša</td>
-          <td id="porceMasa">–</td>
-          <td><span id="podilMasaOut">–</span></td>
-        </tr>
-        <tr>
-          <td>Fanda</td>
-          <td id="porceFanda">–</td>
-          <td><span id="podilFandaOut">–</span></td>
-        </tr>
-        <tr>
-          <td>Tóňa</td>
-          <td id="porceTona">–</td>
-          <td><span id="podilTonaOut">–</span></td>
-        </tr>
-      </tbody>
-      <tfoot>
-        <tr>
-          <td>Součet</td>
-          <td id="součetPorcí">–</td>
-          <td id="součetPodílů">–</td>
-        </tr>
-      </tfoot>
-    </table>
-  </fieldset>
+ Instalovatelná PWA • Offline podpora přes Service Worker • Nastavení se ukládají do localStorage. 
 
-  <script>
-    function format(n){ return Number.isFinite(n) ? (Math.round(n * 100) / 100).toLocaleString('cs-CZ') : '–'; }
 
-    function recalc(){
-      const F2 = parseFloat(document.getElementById('hotova').value) || 0;
-      const F3 = parseFloat(document.getElementById('masaPorce').value) || 0;
-      const F7 = parseFloat(document.getElementById('podilKaja').value) || 0;
-      const G7 = parseFloat(document.getElementById('podilMasa').value) || 0;
-      const H7 = parseFloat(document.getElementById('podilFanda').value) || 0;
-      const I7 = parseFloat(document.getElementById('podilTona').value) || 0;
+<!-- Minimální doplnění vstupů (beze změny stylu) -->
+<div id="vstupy-min">
+  <label>Hotová směs [g] (F2): <input id="hotova" type="number" step="0.01" value="1000" oninput="recalc()"></label>
+  <label>Porce Máši [g] (F3): <input id="masaPorce" type="number" step="0.01" value="229" oninput="recalc()"></label>
+  <label>Podíl Kája [%] (F7): <input id="podilKaja" type="number" step="0.01" value="39.3" oninput="recalc()"></label>
+  <label>Podíl Máša [%] (G7): <input id="podilMasa" type="number" step="0.01" value="22.9" oninput="recalc()"></label>
+  <label>Podíl Fanda [%] (H7): <input id="podilFanda" type="number" step="0.01" value="21.3" oninput="recalc()"></label>
+  <label>Podíl Tóňa [%] (I7): <input id="podilTona" type="number" step="0.01" value="16.5" oninput="recalc()"></label>
+  <button id="vymazat" onclick="resetAll()">Vymazat vše</button>
+</div>
 
-      const zbytek = F2 - F3;
-      const jmenovatel = F7 + H7 + I7;
+<script>
+  function format(n){ return Number.isFinite(n) ? (Math.round(n * 100) / 100).toLocaleString('cs-CZ') : '–'; }
+  function recalc(){
+    const F2 = parseFloat(document.getElementById('hotova').value) || 0;
+    const F3 = parseFloat(document.getElementById('masaPorce').value) || 0;
+    const F7 = parseFloat(document.getElementById('podilKaja').value) || 0;
+    const G7 = parseFloat(document.getElementById('podilMasa').value) || 0;
+    const H7 = parseFloat(document.getElementById('podilFanda').value) || 0;
+    const I7 = parseFloat(document.getElementById('podilTona').value) || 0;
 
-      const porceKaja = jmenovatel > 0 ? zbytek * (F7 / jmenovatel) : 0;
-      const porceFanda = jmenovatel > 0 ? zbytek * (H7 / jmenovatel) : 0;
-      const porceTona = jmenovatel > 0 ? zbytek * (I7 / jmenovatel) : 0;
-      const porceMasa = F3;
+    const zbytek = F2 - F3;
+    const jmenovatel = F7 + H7 + I7;
 
-      document.getElementById('porceKaja').textContent = format(porceKaja);
-      document.getElementById('porceFanda').textContent = format(porceFanda);
-      document.getElementById('porceTona').textContent = format(porceTona);
-      document.getElementById('porceMasa').textContent = format(porceMasa);
+    const porceKaja = jmenovatel > 0 ? zbytek * (F7 / jmenovatel) : 0;
+    const porceFanda = jmenovatel > 0 ? zbytek * (H7 / jmenovatel) : 0;
+    const porceTona = jmenovatel > 0 ? zbytek * (I7 / jmenovatel) : 0;
+    const porceMasa = F3;
 
-      document.getElementById('podilKajaOut').textContent = format(F7);
-      document.getElementById('podilMasaOut').textContent = format(G7);
-      document.getElementById('podilFandaOut').textContent = format(H7);
-      document.getElementById('podilTonaOut').textContent = format(I7);
+    // Zápis do tabulky pokud existují cílové buňky
+    const set = (id,val)=>{ const el=document.getElementById(id); if(el) el.textContent = format(val); };
+    set('porceKaja', porceKaja);
+    set('porceFanda', porceFanda);
+    set('porceTona', porceTona);
+    set('porceMasa', porceMasa);
 
-      const sumPorce = porceKaja + porceFanda + porceTona + porceMasa;
-      document.getElementById('součetPorcí').textContent = format(sumPorce);
-      const sumPodilu = F7 + G7 + H7 + I7;
-      document.getElementById('součetPodílů').textContent = format(sumPodilu);
+    set('podilKajaOut', F7);
+    set('podilMasaOut', G7);
+    set('podilFandaOut', H7);
+    set('podilTonaOut', I7);
 
-      const state = {F2, F3, F7, G7, H7, I7};
-      localStorage.setItem('kalk-porci-state', JSON.stringify(state));
+    localStorage.setItem('kalk-porci-state', JSON.stringify({F2,F3,F7,G7,H7,I7}));
+  }
+  function restore(){
+    try{
+      const s = JSON.parse(localStorage.getItem('kalk-porci-state')||'{}');
+      if(s.F2!==undefined) document.getElementById('hotova').value = s.F2;
+      if(s.F3!==undefined) document.getElementById('masaPorce').value = s.F3;
+      if(s.F7!==undefined) document.getElementById('podilKaja').value = s.F7;
+      if(s.G7!==undefined) document.getElementById('podilMasa').value = s.G7;
+      if(s.H7!==undefined) document.getElementById('podilFanda').value = s.H7;
+      if(s.I7!==undefined) document.getElementById('podilTona').value = s.I7;
+    }catch(e){}
+  }
+  function resetAll(){
+    localStorage.removeItem('kalk-porci-state');
+    document.getElementById('hotova').value = '';
+    document.getElementById('masaPorce').value = '';
+    document.getElementById('podilKaja').value = 39.3;
+    document.getElementById('podilMasa').value = 22.9;
+    document.getElementById('podilFanda').value = 21.3;
+    document.getElementById('podilTona').value = 16.5;
+    ['porceKaja','porceFanda','porceTona','porceMasa','podilKajaOut','podilMasaOut','podilFandaOut','podilTonaOut'].forEach(id=>{ const el=document.getElementById(id); if(el) el.textContent='–'; });
+  }
+  // Přidáme ID do tabulky, pokud chybí, pomocí mírné ochrany: uživatel může mít různé HTML.
+  (function ensureIds(){
+    const rows = document.querySelectorAll('table tr');
+    if(rows.length>=5){
+      const cellsK = rows[1].querySelectorAll('td');
+      const cellsM = rows[2].querySelectorAll('td');
+      const cellsF = rows[3].querySelectorAll('td');
+      const cellsT = rows[4].querySelectorAll('td');
+      if(cellsK[1] && !cellsK[1].id) cellsK[1].id='porceKaja';
+      if(cellsK[2] && !cellsK[2].firstElementChild){ const s=document.createElement('span'); s.id='podilKajaOut'; cellsK[2].appendChild(s);} 
+      if(cellsM[1] && !cellsM[1].id) cellsM[1].id='porceMasa';
+      if(cellsM[2] && !cellsM[2].firstElementChild){ const s=document.createElement('span'); s.id='podilMasaOut'; cellsM[2].appendChild(s);} 
+      if(cellsF[1] && !cellsF[1].id) cellsF[1].id='porceFanda';
+      if(cellsF[2] && !cellsF[2].firstElementChild){ const s=document.createElement('span'); s.id='podilFandaOut'; cellsF[2].appendChild(s);} 
+      if(cellsT[1] && !cellsT[1].id) cellsT[1].id='porceTona';
+      if(cellsT[2] && !cellsT[2].firstElementChild){ const s=document.createElement('span'); s.id='podilTonaOut'; cellsT[2].appendChild(s);} 
     }
-
-    function restore(){
-      try {
-        const raw = localStorage.getItem('kalk-porci-state');
-        if(!raw) return;
-        const s = JSON.parse(raw);
-        if(s.F2!==undefined) document.getElementById('hotova').value = s.F2;
-        if(s.F3!==undefined) document.getElementById('masaPorce').value = s.F3;
-        if(s.F7!==undefined) document.getElementById('podilKaja').value = s.F7;
-        if(s.G7!==undefined) document.getElementById('podilMasa').value = s.G7;
-        if(s.H7!==undefined) document.getElementById('podilFanda').value = s.H7;
-        if(s.I7!==undefined) document.getElementById('podilTona').value = s.I7;
-      } catch(e) {}
-    }
-
-    document.getElementById('vymazat').addEventListener('click', () => {
-      localStorage.removeItem('kalk-porci-state');
-      document.getElementById('hotova').value = '';
-      document.getElementById('masaPorce').value = '';
-      document.getElementById('podilKaja').value = 39.3;
-      document.getElementById('podilMasa').value = 22.9;
-      document.getElementById('podilFanda').value = 21.3;
-      document.getElementById('podilTona').value = 16.5;
-      document.getElementById('porceKaja').textContent = '–';
-      document.getElementById('porceFanda').textContent = '–';
-      document.getElementById('porceTona').textContent = '–';
-      document.getElementById('porceMasa').textContent = '–';
-      document.getElementById('podilKajaOut').textContent = '–';
-      document.getElementById('podilMasaOut').textContent = '–';
-      document.getElementById('podilFandaOut').textContent = '–';
-      document.getElementById('podilTonaOut').textContent = '–';
-      document.getElementById('součetPorcí').textContent = '–';
-      document.getElementById('součetPodílů').textContent = '–';
-    });
-
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('./sw.js').catch(() => {});
-      });
-    }
-
-    restore();
-    recalc();
-  </script>
-</body>
-</html>
+  })();
+  restore();
+  recalc();
+</script>
